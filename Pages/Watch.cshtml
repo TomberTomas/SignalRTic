@@ -1,0 +1,49 @@
+﻿@page
+@model WatchModel
+@{
+    ViewData["Title"] = "Watch room";
+    
+}
+    <div class="row">
+        <div class="col-6">
+            <canvas id="myCanvas" width="300" height="300" style="border:1px solid #000000;">
+            </canvas>        
+        </div>
+        <div class="col-6">
+            <h1>Room: <span id="roomName">@Model.roomName</span></h1>
+            @foreach (var x in SignalRChat.Hubs.UserHandler.Users.FindAll(y => y.Room == Model.roomName))
+            {
+                @if(x.circlePlayer) {
+                    <h2>@x._Name is circle</h2>
+                }
+                @if(!x.circlePlayer) {
+                    <h2>@x._Name is cross</h2>
+                }
+            }            
+            <p id="stats">Circle wins: <span id = "circleWins">@SignalRChat.Hubs.GroupHandler.GroupCircleWins[Model.roomName]</span></p>
+            <p>Cross wins: <span id = "crossWins">@SignalRChat.Hubs.GroupHandler.GroupCrossWins[Model.roomName]</span></p>
+            <p>Draws: <span id = "drawWins">@SignalRChat.Hubs.GroupHandler.GroupDrawWins[Model.roomName]</span></p>
+            <p>Number of games played: <span id ="numGames">@SignalRChat.Hubs.GroupHandler.GroupRoundsPlayed[Model.roomName]</span></p>
+
+            <button id="btnLeaveGame">Leave game!</button><br>
+        </div>
+    </div>
+    
+    
+<script>
+    var circleArray = [];
+    @foreach (var x in SignalRChat.Hubs.GroupHandler.GroupUnits.Find(x => x._Name == Model.roomName).Circles) {
+        <text>
+            circleArray.push(@x);
+      </text>
+    }
+    var crossArray = [];
+    @foreach (var x in SignalRChat.Hubs.GroupHandler.GroupUnits.Find(x => x._Name == Model.roomName).Crosses) {
+        <text>
+            crossArray.push(@x);
+      </text>
+    }
+    
+</script>
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/watch.js"></script>

@@ -1,0 +1,64 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Lounge";
+    
+}
+    <div class="container">
+        <div class="row">&nbsp;</div>
+        <div class="row">
+            <div class="col-3">Name</div>
+            <div class="col-4">
+                @if(Model.userName != null) {
+                <p id="userName">@Model.userName</p>
+                }
+                @if(Model.userName == null) {
+                <input type="text" id="userName" />
+                }
+                </div>
+            <div class="col-2"><input type="button" id="createUser" value="Create User" /></div>
+        </div>
+        <div class="row">&nbsp;</div>
+        <div class="row">
+            <div class="col-3">Room name</div>
+            <div class="col-4"><input type="text" id="roomName" /></div>
+            <div class="col-2"><input type="button" id="createRoom" value="Create Room" /></div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-12">
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <ul id="messagesList"></ul>
+        </div>
+    </div>
+    <div id="roomsList">
+        @foreach (var x in SignalRChat.Hubs.GroupHandler.OpenRooms)
+    {<p>@x<button class="openRooms" name="@x">Join Room</button></p>}
+    </div>
+    <div id="ongoing">
+        @foreach (var x in SignalRChat.Hubs.GroupHandler.OngoingGames)
+    {<p>Room name: @x<button class="watchGame" name="@x">Watch game</button></p>}
+    </div>
+    <div>
+        <h3>Statistics</h3>
+        <h4>Total games played: @SignalRChat.Hubs.UserHandler.GamesPlayed</h4>
+
+        @foreach (var x in SignalRChat.Hubs.UserHandler.Users)
+    {<p>@x._Name has won @x.Wins times, lost @x.Losses times and has @x.Draws draws</p>}
+    </div>
+
+    
+    <script>
+        @if(Model.userName != null) {
+            <text>
+            var ifNameFromOtherGame = true;
+            </text>
+        }
+    </script>
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/lounge.js"></script>

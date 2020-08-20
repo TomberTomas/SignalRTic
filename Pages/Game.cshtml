@@ -1,0 +1,36 @@
+﻿@page
+@model GameModel
+@{
+    ViewData["Title"] = "Game room";
+    
+}
+    <div class="row">
+        <div class="col-6">
+            <canvas id="myCanvas" width="300" height="300" style="border:1px solid #000000;">
+            </canvas>        
+        </div>
+        <div class="col-6">
+            <h1>Room: <span id="roomName">@Model.roomName</span></h1>
+            <h2 id="circlePlayer">You are <span id='userName'>@Model.userName</span> and play by: @if (Model.circlePlayer == 1) {
+                <span>circle</span>} @if (Model.circlePlayer == 0) {
+                <span>cross</span>
+                }
+            </h2>
+            <h3 id="instructions">Circle's turn!<h3>
+            <p>Circle wins: <span id="statsCircle">0</span></p>
+            <p>Cross wins: <span id="statsCross">0</span></p>
+            <p>Draws: <span id="statsDraws">0</span></p>
+
+            <p>Number of games played: <span id ="numGames">0</span></p>
+            <button id="btnAskNewGame">Play again?</button><br>
+            <button id="btnStartNewGame">Start new game!</button><br>
+            <button id="btnLeaveGame">Leave game!</button><br>
+        </div>
+    </div>
+    
+    
+<script>
+    var circlePlayer = @Model.circlePlayer;
+</script>
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/game.js"></script>
